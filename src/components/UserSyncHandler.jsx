@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import { AppContext } from "../context/AppContext";
 
 const UserSyncHandler = () => {
-
     const {isLoaded, isSignedIn, getToken} = useAuth();
     const {user} = useUser();
     const [synced, setSynced] = useState(false);
@@ -13,32 +12,41 @@ const UserSyncHandler = () => {
 
     useEffect(() => {
         const saveUser = async () => {
-            if(!isLoaded || !isSignedIn || synced){
-                return;
-            }
+            if(!isLoaded || !isSignedIn || synced) return;
 
             try{
                 const token = await getToken();
-
+                
                 const userData = {
                     clerkId: user.id,
                     email: user.primaryEmailAddress?.emailAddress,
                     firstName: user.firstName,
                     lastName: user.lastName,
+                    photoUrl: user.imageUrl || "",
                 };
-
-                await axios.post(backendUrl+"/users", userData, {headers: {"Authorization" : `Bearer ${token}`}});
-
+                
+                await axios.post(
+                    `${backendUrl}/users`, 
+                    userData, 
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
+                
                 setSynced(true);
+                toast.success("User synced successfully!");
             }
             catch(error){
                 console.error("Error syncing user:", error);
+                toast.error("Failed to sync user");
             }
         }
         saveUser();
 
-    },[isLoaded, isSignedIn, user, synced, getToken]);
-
+    },[isLoaded, isSignedIn, user, synced, getToken, backendUrl]);
 
     return null;
 }
