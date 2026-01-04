@@ -8,7 +8,7 @@ const UserSyncHandler = () => {
     const {isLoaded, isSignedIn, getToken} = useAuth();
     const {user} = useUser();
     const [synced, setSynced] = useState(false);
-    const {backendUrl} = useContext(AppContext);
+    const {backendUrl,loadUserCredits} = useContext(AppContext);
 
     useEffect(() => {
         const saveUser = async () => {
@@ -37,7 +37,7 @@ const UserSyncHandler = () => {
                 );
                 
                 setSynced(true);
-                toast.success("User synced successfully!");
+                await loadUserCredits();
             }
             catch(error){
                 console.error("Error syncing user:", error);

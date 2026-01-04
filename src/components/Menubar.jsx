@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Eraser, Menu, X, ChevronRight, Coins } from "lucide-react";
 import { SignedIn, SignedOut, useAuth, useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import { AppContext } from "../context/AppContext";
 
 const Menubar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const {openSignIn, openSignUp} = useClerk();
     const {user} = useUser();
+    const {credit} = useContext(AppContext);
 
 
     const openRegister =() => {
@@ -110,7 +112,7 @@ const Menubar = () => {
                                     <button className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1 5 sm:py-2 5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
                                         <Coins size={14} className="text-blue-600" />
                                         <p className="text-xs sm:text-sm font-medium text-gray-600">
-                                            Credits: 0
+                                            Credits: {credit}
                                         </p>
                                     </button>
                                     
