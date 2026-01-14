@@ -1,4 +1,4 @@
-# 🖼️ RemoveBG AI – AI Background Remover
+# 🖼️ RemoveBG  – AI Background Remover
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-18-blue" />
